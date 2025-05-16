@@ -9,7 +9,7 @@
 .npmrc
 package-lock*
 yarn.lock
-pnpm-lock*
+# pnpm-lock*
 
 # testing
 /coverage

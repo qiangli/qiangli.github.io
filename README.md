@@ -15,10 +15,10 @@ This is a resume written in Next.js which can be deployed to GitHub Pages as a s
 Build locally
 
 ```bash
-npm install
-npm run format
-npm run lint
-npm run build
+pnpm install
+pnpm run format
+pnpm run lint
+pnpm run build
 ```
 
 Serve the out/ directory locally after the build
