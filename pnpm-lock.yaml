@@ -39,7 +39,7 @@ importers:
         specifier: 0.5.8
         version: 0.5.8(acorn@8.14.1)(esbuild@0.25.4)
       globals:
-        specifier: ^16.1.0
+        specifier: 16.1.0
         version: 16.1.0
       next:
         specifier: 15.3.2
