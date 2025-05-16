@@ -1,0 +1,8 @@
+# Welcome, robots!
+
+User-agent: *
+
+Disallow: /pdf
+Disallow: /private/
+
+Allow: /

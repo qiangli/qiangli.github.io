@@ -1,0 +1,27 @@
+.contactInfo {
+  padding: 20px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+}
+
+.contactInfo h3 {
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.contactInfo p {
+  margin-bottom: 5px;
+}
+
+.contactInfo a {
+  margin-left: 5px;
+  text-decoration: none;
+}
+
+.contactInfo a:hover,
+.contactInfo a:focus,
+.contactInfo a:active {
+  text-decoration: underline;
+  color: red;
+}
