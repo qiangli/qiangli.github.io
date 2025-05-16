@@ -1,8 +1,6 @@
-// import { personal } from '@content';
 import { Metadata, Viewport } from 'next';
 import { ThemeProvider } from 'next-themes';
 import { Albert_Sans, JetBrains_Mono } from 'next/font/google';
-// import { headers } from 'next/headers';
 import { PropsWithChildren, ReactNode } from 'react';
 import Footer from 'src/components/footer/footer';
 import Header from 'src/components/header/header';
@@ -25,8 +23,7 @@ const jetBrainsMono = JetBrains_Mono({
 export const dynamic = 'force-static';
 
 export function generateMetadata(): Metadata {
-  // const requestHeaders = await headers();
-  const host = `qiang.li`; //requestHeaders.get('host');
+  const host = `qiang.li`;
   const baseURL = `${protocol}://${host}`;
   const siteName = `${fullName} Professional Résumé`;
   const title = `Résumé | ${fullName}`;
@@ -40,22 +37,7 @@ export function generateMetadata(): Metadata {
     generator: 'Next.js',
     keywords: ['resume', fullName, 'next.js', 'pdf'],
     metadataBase: new URL(baseURL),
-    // openGraph: {
-    //   type: 'profile',
-    //   firstName: personal.givenName,
-    //   lastName: personal.familyName,
-    //   title,
-    //   description,
-    //   siteName,
-    //   url: baseURL,
-    // },
     title,
-    // twitter: {
-    //   site: siteName,
-    //   creator: fullName,
-    //   description,
-    //   title,
-    // },
   };
 }
 

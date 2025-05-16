@@ -4,7 +4,6 @@ import { links } from '@config/links';
 import { personal } from '@content';
 import { ReactNode } from 'react';
 import { Button } from 'src/components/button/button';
-// import { fullName } from 'src/helpers/utilities';
 import SimpleLink from '../link/simple-link';
 
 const scrollTop = (): void => {

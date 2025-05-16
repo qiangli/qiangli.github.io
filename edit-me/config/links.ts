@@ -1,7 +1,6 @@
 import {
   SiLinuxprofessionalinstitute,
   SiGithub,
-  // SiNpm,
 } from '@icons-pack/react-simple-icons';
 import { CMSLink } from 'edit-me/types/cms-link';
 import LinkedInIcon from './LinkedInIcon';

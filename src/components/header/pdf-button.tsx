@@ -11,7 +11,8 @@ export default function PDFButton(): ReactNode {
         href="https://drive.google.com/file/d/1-3bW17BzpzygVsLCdCBHoZUadYAj5l70/view?usp=sharing"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Download PDF version from Google Drive"
+        title="One page PDF version"
+        aria-label="One page PDF version"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

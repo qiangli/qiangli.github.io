@@ -9,6 +9,7 @@ export default function PrinterButton(): ReactNode {
     <Button asChild key="print-page" size="icon">
       <a
         href="#"
+        title="Print this page"
         aria-label="Print this page"
         onClick={(event) => {
           event.preventDefault();

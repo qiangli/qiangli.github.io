@@ -5,7 +5,6 @@ import styles from '@styles/contact-card.module.css';
 
 // https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css
 // https://fontawesome.com/search
-
 export default function ContactCard(): ReactNode {
   return (
     <>

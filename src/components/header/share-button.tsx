@@ -7,7 +7,12 @@ import { Button } from 'src/components/button/button';
 export default function ShareButton(): ReactNode {
   return (
     <Button asChild key="share-page" size="icon">
-      <a href="#" onClick={handleShare} aria-label="Share this page">
+      <a
+        href="#"
+        onClick={handleShare}
+        title="Share this page"
+        aria-label="Share this page"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
