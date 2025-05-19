@@ -34,7 +34,7 @@ export default function ContactCard(): ReactNode {
           <i className="fab fa-linkedin"></i>
           <a
             target="_blank"
-            href="https://www.linkedin.com/messaging/thread/new/?recipient=urn:li:person:liqiangsprofile"
+            href="https://www.linkedin.com/in/liqiangsprofile/"
             rel="noreferrer"
           >
             <span>https://www.linkedin.com/in/liqiangsprofile/</span>
