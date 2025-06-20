@@ -5,3 +5,16 @@
 @import './base';
 @import './variants';
 @import './utilities';
+
+@media print {
+  .break-before-page {
+    break-before: page;
+  }
+}
+
+@media print {
+  .container,
+  .container * {
+    font-size: 0.8rem !important;
+  }
+}

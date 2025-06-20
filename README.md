@@ -15,7 +15,10 @@ This is a resume written in Next.js which can be deployed to GitHub Pages as a s
 Build locally
 
 ```bash
+# corepack enable 
+# corepack prepare pnpm@latest --activate         
 pnpm install
+#
 pnpm run format
 pnpm run lint
 pnpm run build

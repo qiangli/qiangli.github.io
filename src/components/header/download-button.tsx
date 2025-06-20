@@ -4,15 +4,15 @@ import { ReactNode } from 'react';
 import { Button } from 'src/components/button/button';
 
 // https://icons.getbootstrap.com/icons/file-pdf/
-export default function PDFButton(): ReactNode {
+export default function DownloadButton(): ReactNode {
   return (
-    <Button asChild key="onepage-pdf-version" size="icon">
+    <Button asChild key="download-pdf-version" size="icon">
       <a
-        href="https://drive.google.com/file/d/1-3bW17BzpzygVsLCdCBHoZUadYAj5l70/view?usp=sharing"
+        href="/print/pdf"
         target="_blank"
         rel="noopener noreferrer"
-        title="One page PDF version"
-        aria-label="One page PDF version"
+        title="Download PDF version"
+        aria-label="Download PDF version"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

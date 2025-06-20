@@ -9,7 +9,7 @@ export const dynamic = 'force-static';
 
 export default function Page(): ReactNode {
   return (
-    <div className="container space-y-12">
+    <div className="container space-y-12 print:text-xs">
       <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
         <AboutMe />
         <ContactInformation />

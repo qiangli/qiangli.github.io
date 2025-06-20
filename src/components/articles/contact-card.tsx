@@ -37,7 +37,9 @@ export default function ContactCard(): ReactNode {
             href="https://www.linkedin.com/in/liqiangsprofile/"
             rel="noreferrer"
           >
-            <span className={styles.linkHead}>https://www.linkedin.com/in/</span>
+            <span className={styles.linkHead}>
+              https://www.linkedin.com/in/
+            </span>
             <span>liqiangsprofile</span>
             <i
               className="fas fa-external-link-alt"

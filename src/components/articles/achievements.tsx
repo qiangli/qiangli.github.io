@@ -25,7 +25,7 @@ export default function Achievements(): ReactNode {
 
   return (
     <>
-      <article className="border-neutral-6 bg-neutral-2 rounded-xl border py-12 shadow-md">
+      <article className="border-neutral-6 bg-neutral-2 rounded-xl border py-12 shadow-md print:break-before-page">
         <div className="container space-y-8">
           <SectionHeading
             data-aos="fade-center"

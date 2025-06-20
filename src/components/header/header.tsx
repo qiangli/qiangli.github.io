@@ -9,6 +9,8 @@ import { fullName } from 'src/helpers/utilities';
 import PrinterButton from './printer-button';
 import PDFButton from './pdf-button';
 import ShareButton from './share-button';
+// import DownloadButton from './download-button';
+// import GoogleButton from './google-button';
 
 export default function Header(): ReactNode {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -61,6 +63,8 @@ export default function Header(): ReactNode {
           <div className="hidden items-center gap-3 md:flex">
             <PrinterButton />
             <PDFButton />
+            {/* <DownloadButton /> */}
+            {/* <GoogleButton /> */}
             <ShareButton />
             <ThemeToggle
               buttonTextVisible={false}
