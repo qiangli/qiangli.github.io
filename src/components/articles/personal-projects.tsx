@@ -1,15 +1,15 @@
 'use client';
 
-import { BriefcaseIcon } from '@heroicons/react/24/solid';
+import { PaintBrushIcon } from '@heroicons/react/24/solid';
 import { Fragment, ReactNode, useEffect } from 'react';
 import Separator from 'src/components/articles/separator';
 import SectionHeading from 'src/components/section-heading/section-heading';
-import { sortedProfessionalExperiences } from 'src/helpers/utilities';
-import ProfessionalItem from './professional-item';
+import { sortedPersonalProjects } from 'src/helpers/utilities';
+import PersonalItem from './personal-item';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-export default function Professional(): ReactNode {
+export default function PersonalProjects(): ReactNode {
   useEffect(() => {
     AOS.init();
   });
@@ -21,14 +21,14 @@ export default function Professional(): ReactNode {
           data-aos="fade-center"
           data-aos-duration="600"
           className="justify-center"
-          Icon={BriefcaseIcon}
+          Icon={PaintBrushIcon}
           level={2}
-          text="Professional Experience"
+          text="Personal Projects"
         />
         <div>
-          {sortedProfessionalExperiences.map((professional) => (
-            <Fragment key={professional._id}>
-              <ProfessionalItem {...professional} />
+          {sortedPersonalProjects.map((item) => (
+            <Fragment key={item._id}>
+              <PersonalItem {...item} />
               <Separator />
             </Fragment>
           ))}

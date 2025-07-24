@@ -1,6 +1,7 @@
 import * as React from 'react';
 import type { IconType } from '@icons-pack/react-simple-icons';
 
+// eslint-disable-next-line react/display-name
 const LinkedInIcon = React.forwardRef<SVGSVGElement, React.SVGProps<SVGSVGElement>>((props, ref) => (
   <svg
     role="img"

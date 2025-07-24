@@ -3,7 +3,7 @@ import {
   SiGithub,
 } from '@icons-pack/react-simple-icons';
 import { CMSLink } from 'edit-me/types/cms-link';
-import LinkedInIcon from './LinkedInIcon';
+import LinkedInIcon from './linkedin-icon';
 
 // https://simpleicons.org/
 export const links: CMSLink[] = [

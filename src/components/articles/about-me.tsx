@@ -1,4 +1,4 @@
-import { personal } from '@content';
+import { personalInfo } from '@content';
 import { UserIcon } from '@heroicons/react/24/solid';
 import { ReactNode } from 'react';
 import Prose from 'src/components/prose/prose';
@@ -8,7 +8,7 @@ export default function AboutMe(): ReactNode {
   return (
     <article className="space-y-4">
       <SectionHeading Icon={UserIcon} level={3} text="About" />
-      <Prose html={personal.body.html} />
+      <Prose html={personalInfo.body.html} />
     </article>
   );
 }

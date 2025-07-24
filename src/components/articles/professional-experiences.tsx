@@ -1,15 +1,15 @@
 'use client';
 
-import { PaintBrushIcon } from '@heroicons/react/24/solid';
+import { BriefcaseIcon } from '@heroicons/react/24/solid';
 import { Fragment, ReactNode, useEffect } from 'react';
 import Separator from 'src/components/articles/separator';
 import SectionHeading from 'src/components/section-heading/section-heading';
-import { sortedAdditionalInfos } from 'src/helpers/utilities';
-import AdditionalItem from './additional-item';
+import { sortedProfessionalExperiences } from 'src/helpers/utilities';
+import ProfessionalItem from './professional-item';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-export default function AdditionalInfo(): ReactNode {
+export default function ProfessionalExperiences(): ReactNode {
   useEffect(() => {
     AOS.init();
   });
@@ -21,14 +21,14 @@ export default function AdditionalInfo(): ReactNode {
           data-aos="fade-center"
           data-aos-duration="600"
           className="justify-center"
-          Icon={PaintBrushIcon}
+          Icon={BriefcaseIcon}
           level={2}
-          text="Additional Info"
+          text="Professional Experience"
         />
         <div>
-          {sortedAdditionalInfos.map((item) => (
-            <Fragment key={item._id}>
-              <AdditionalItem {...item} />
+          {sortedProfessionalExperiences.map((professional) => (
+            <Fragment key={professional._id}>
+              <ProfessionalItem {...professional} />
               <Separator />
             </Fragment>
           ))}

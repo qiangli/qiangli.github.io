@@ -4,9 +4,9 @@ import {
   makeSource,
 } from 'contentlayer2/source-files';
 
-export const Personal = defineDocumentType(() => ({
-  name: 'Personal',
-  filePathPattern: 'personal.md',
+export const PersonalInfo = defineDocumentType(() => ({
+  name: 'PersonalInfo',
+  filePathPattern: 'personal-info.md',
   isSingleton: true,
   fields: {
     givenName: {
@@ -107,6 +107,21 @@ export const Achievement = defineDocumentType(() => ({
   },
 }));
 
+
+export const PersonalProjects = defineDocumentType(() => ({
+  name: 'PersonalProjects',
+  filePathPattern: 'personal-projects/*.md',
+  isSingleton: false,
+  fields: {
+    title: {
+      type: 'string',
+      description: 'The name of the personal projects section',
+      required: false,
+    },
+  },
+}));
+
+
 export const AdditionalInfo = defineDocumentType(() => ({
   name: 'AdditionalInfo',
   filePathPattern: 'additional-items/*.md',
@@ -135,8 +150,9 @@ export const PrivateField = defineDocumentType(() => ({
 export default makeSource({
   contentDirPath: 'edit-me/content',
   documentTypes: [
-    Personal,
+    PersonalInfo,
     ProfessionalExperience,
+    PersonalProjects,
     Achievement,
     AdditionalInfo,
     PrivateField,

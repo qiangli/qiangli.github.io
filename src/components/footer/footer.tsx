@@ -1,7 +1,7 @@
 'use client';
 
 import { links } from '@config/links';
-import { personal } from '@content';
+import { personalInfo } from '@content';
 import { ReactNode } from 'react';
 import { Button } from 'src/components/button/button';
 import SimpleLink from '../link/simple-link';
@@ -28,7 +28,7 @@ export default function Footer(): ReactNode {
             >
               <a href={link.href}>
                 <span className="sr-only">
-                  {personal.givenName} on {link.title}
+                  {personalInfo.givenName} on {link.title}
                 </span>
                 <link.icon aria-hidden size={18} />
               </a>

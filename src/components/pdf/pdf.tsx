@@ -1,5 +1,5 @@
 import { resumeConfig } from '@config/resume-config';
-import { PrivateField, ProfessionalExperience, personal } from '@content';
+import { PrivateField, ProfessionalExperience, personalInfo } from '@content';
 import {
   Document,
   Font,
@@ -21,8 +21,9 @@ import CircleUser from 'src/components/pdf/icons/circle-user';
 import { getAccentColor, getNeutralColor } from 'src/helpers/colors';
 import {
   fullName,
+  sortedPersonalProjects,
   sortedAchievements,
-  sortedAdditionalItems,
+  sortedAdditionalInfos,
   sortedProfessionalExperiences,
 } from 'src/helpers/utilities';
 
@@ -280,7 +281,7 @@ export default function PDF({ privateInformation }: PDFProperties): ReactNode {
         <View style={styles.sidebar}>
           <View style={styles.header}>
             <Text style={styles.headerTitle}>{fullName}</Text>
-            <Text style={styles.headerSubtitle}>{personal.title}</Text>
+            <Text style={styles.headerSubtitle}>{personalInfo.title}</Text>
           </View>
           <View style={styles.sidebarContent}>
             <View style={styles.section}>
@@ -288,7 +289,7 @@ export default function PDF({ privateInformation }: PDFProperties): ReactNode {
                 <CircleUser size={fontSizes.m} />
                 <Text>About</Text>
               </View>
-              <Html {...htmlProperties}>{personal.body.html}</Html>
+              <Html {...htmlProperties}>{personalInfo.body.html}</Html>
             </View>
             <View style={styles.section}>
               <View style={styles.sectionHeadingNonHTML}>
@@ -297,7 +298,7 @@ export default function PDF({ privateInformation }: PDFProperties): ReactNode {
               </View>
               <View style={styles.flexRow}>
                 <Text style={styles.bold}>Location:</Text>
-                <Text>&nbsp;{personal.location}</Text>
+                <Text>&nbsp;{personalInfo.location}</Text>
               </View>
               {privateInformation?.map((privateField) => (
                 <View key={privateField._id}>
@@ -308,6 +309,7 @@ export default function PDF({ privateInformation }: PDFProperties): ReactNode {
             </View>
           </View>
         </View>
+
         <View style={styles.main}>
           <View style={styles.section}>
             <View style={styles.sectionHeading}>
@@ -325,6 +327,20 @@ export default function PDF({ privateInformation }: PDFProperties): ReactNode {
                 <Html {...htmlProperties}>
                   {professionalExperience.body.html}
                 </Html>
+              </View>
+            ))}
+          </View>
+          <View style={styles.section}>
+            <View style={styles.sectionHeading}>
+              <CirclePaintbrush size={fontSizes.m} />
+              <Text>Personal Projects</Text>
+            </View>
+            {sortedPersonalProjects.map((item) => (
+              <View key={item._id}>
+                <View style={styles.itemHeading}>
+                  <Text style={styles.bold}>{item.title}</Text>
+                </View>
+                <Html {...htmlProperties}>{item.body.html}</Html>
               </View>
             ))}
           </View>
@@ -351,9 +367,9 @@ export default function PDF({ privateInformation }: PDFProperties): ReactNode {
           <View style={styles.section}>
             <View style={styles.sectionHeading}>
               <CirclePaintbrush size={fontSizes.m} />
-              <Text>Personal Projects</Text>
+              <Text>Additional Info</Text>
             </View>
-            {sortedAdditionalItems.map((item) => (
+            {sortedAdditionalInfos.map((item) => (
               <View key={item._id}>
                 <View style={styles.itemHeading}>
                   <Text style={styles.bold}>{item.title}</Text>

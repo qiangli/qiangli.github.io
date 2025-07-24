@@ -1,5 +1,5 @@
 import { resumeConfig } from '@config/resume-config';
-import { personal } from '@content';
+import { personalInfo } from '@content';
 import { ImageResponse } from 'next/og';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -52,7 +52,7 @@ export default async function og(): Promise<ImageResponse> {
             }}
             tw="mt-4 text-6xl"
           >
-            {personal.title}
+            {personalInfo.title}
           </div>
         </div>
         <div

@@ -1,6 +1,6 @@
 'use client';
 
-import { personal } from '@content';
+import { personalInfo } from '@content';
 import { ReactNode, useState } from 'react';
 import { Heading } from 'src/components/heading/heading';
 import { ThemeToggle } from 'src/components/theme-toggle/theme-toggle';
@@ -56,7 +56,7 @@ export default function Header(): ReactNode {
           <div className="flex-1 space-y-2">
             <Heading level={1}>{fullName}</Heading>
             <Heading color="muted" className="text-balance" level={2}>
-              {personal.title}
+              {personalInfo.title}
             </Heading>
           </div>
           {/* Desktop Buttons */}

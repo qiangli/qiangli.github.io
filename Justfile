@@ -15,3 +15,7 @@ start:
 tidy:
     pnpm format
     pnpm lint
+
+run:
+    go run server/main.go
+

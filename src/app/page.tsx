@@ -3,7 +3,8 @@ import AboutMe from 'src/components/articles/about-me';
 import Achievements from 'src/components/articles/achievements';
 import AdditionalInfo from 'src/components/articles/additional-info';
 import ContactInformation from 'src/components/articles/contact-info';
-import Professional from 'src/components/articles/professional';
+import ProfessionalExperiences from 'src/components/articles/professional-experiences';
+import PersonalProjects from 'src/components/articles/personal-projects';
 
 export const dynamic = 'force-static';
 
@@ -14,8 +15,8 @@ export default function Page(): ReactNode {
         <AboutMe />
         <ContactInformation />
       </div>
-
-      <Professional />
+      <ProfessionalExperiences />
+      <PersonalProjects />
       <Achievements />
       <AdditionalInfo />
     </div>
