@@ -2,14 +2,13 @@
 givenName: Qiang
 familyName: LI
 title: Software Engineer
-location: San Franscisco Bay Area, USA
+location: San Francisco Bay Area, USA
 ---
 
 
-Qiang has an extensive, in-depth cross-section of technical knowledge.
+Qiang is a software engineer focused on large-scale distributed systems and AI-native developer tooling. Career spans Oracle, IBM, GE Aviation (Predix), Cyanogen, and 10x Genomics.
 
-+ Experienced in Internet, Unix, and networking technologies (Linux, TCP/IP, XMPP, FTP, SMTP, HTTP, REST)
-+ Strong in software design and development of large-scale enterprise applications (Golang, Node.js, AWS, Docker)
-+ Proficient in database technologies (PostgreSQL, Oracle)
-+ Competent with machine learning and AI technologies
-
++ **Backend & cloud:** Go, Node.js, Python, AWS / EKS, Kubernetes, Docker, PostgreSQL
++ **AI / LLM:** agentic CLI tooling, LiteLLM gateway, OpenAI / Gemini integration, multi-surface chat UIs
++ **Frontend:** React, TypeScript, Next.js
++ **Open source:** see Personal Projects below

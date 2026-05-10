@@ -2,11 +2,10 @@
 title: Awesome AI Tools
 ---
 
-🤖 [https://github.com/qiangli/awesome](https://github.com/qiangli/awesome)
+🤖 [github.com/qiangli/awesome](https://github.com/qiangli/awesome)
 
-This is a collection of open-source AI tools that anyone can run 
-and customize on a local machine, aimed at enhancing productivity
-in your day-to-day workflow as a coder. All tools are available
-under permissive licenses, including MIT, BSD, Apache, or MPL.
-Docker compose files are provided and are ready to run.
- 
+A docker-compose stack of self-hostable, open-source AI tools (Continue, Cline, OpenHands, Aider, and more) wired up behind a [LiteLLM](https://docs.litellm.ai/) gateway and Traefik router. Drop in your `OPENAI_API_KEY`, run `make start`, and every tool is reachable at `http://<app>.localhost`.
+
+All bundled tools are MIT / BSD / Apache / MPL licensed and runnable on a laptop.
+
+**Stack:** Docker Compose · LiteLLM · Traefik · Make

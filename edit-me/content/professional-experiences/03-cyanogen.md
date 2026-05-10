@@ -1,7 +1,7 @@
 ---
 organization: Cyanogen Inc.
 titles:
-  - title: Senior Sofware Engineer
+  - title: Senior Software Engineer
     startDate: 'Sep 2014'
     endDate: 'Aug 2015'
     description:
