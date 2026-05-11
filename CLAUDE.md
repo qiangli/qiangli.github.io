@@ -63,3 +63,25 @@ Tailwind CSS v4 (configured via `@tailwindcss/postcss` in `postcss.config.cjs`; 
 - Always run `pnpm lint` and `pnpm types` before declaring frontend work done; the deploy workflow does not lint/typecheck, but a broken build will block the next push to `main`.
 - `syncpack` is enforced — keep dependency versions consistent across any future workspaces (`pnpm-workspace.yaml` exists). Use `pnpm sync` to auto-fix mismatches; `.syncpackrc` defines the rules.
 - Personal résumé content (names, employers, projects) is intentionally checked in under `edit-me/content/`. The README's MIT license excludes that personal info — do not refactor it away when forking the template.
+
+<!-- BEGIN YCODE -->
+## ycode
+
+This repo expects [ycode](https://github.com/qiangli/ycode) running locally as
+agentic infrastructure. When acting as an agentic coding tool, see
+[`.agents/ycode/AGENTS.md`](.agents/ycode/AGENTS.md) for capability descriptions and when to
+prefer them. Run `ycode init --refresh` to update this section.
+
+### Self-Bootstrap (Foreman role)
+
+You are the **Foreman** for this session. The Boss → Foreman → Worker
+protocol is universal across every ycode-aware repo. When helping the
+user plan, write tasks as `docs/backlog/<slug>.md` files (frontmatter:
+`title`, `priority: p1|p2|p3`, `state: open`). When starting cold with no
+specific user task, invoke `/foreman`. The skill body is at
+`~/.config/ycode/skills/ycode-foreman/skill.md` (user-global, written
+by `ycode init`; embedded in the binary as fallback). Boss control:
+`ycode foreman pause/resume/stop/skip/prio/tell/status`.
+Full protocol: [`docs/backlog.md`](docs/backlog.md). Available skills are
+listed in [`.agents/ycode/AGENTS.md`](.agents/ycode/AGENTS.md#skills-available-via-ycode).
+<!-- END YCODE -->

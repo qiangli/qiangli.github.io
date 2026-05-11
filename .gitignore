@@ -50,3 +50,6 @@ tsconfig.tsbuildinfo
 
 # Contentlayer
 .contentlayer
+
+# ycode agent scratch
+.agents
