@@ -33,8 +33,8 @@ const handleShare = (event: MouseEvent): void => {
   navigator
     .share({
       title: 'Resume - Qiang Li, Software Engineer',
-      text: 'Find out more on my github page at http://qiang.li/, thanks!',
-      url: 'http://qiang.li/',
+      text: 'Find out more on my github page at https://qiang.li/, thanks!',
+      url: 'https://qiang.li/',
     })
     .catch((error: unknown) => {
       console.error('Failed to share:', error);

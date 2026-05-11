@@ -12,8 +12,8 @@ export default function ContactCard(): ReactNode {
         <h3>Qiang Li</h3>
         <p>
           <i className="fab fa-chrome"></i>
-          <a target="_blank" href="http://qiang.li/" rel="noreferrer">
-            <span>http://qiang.li/</span>
+          <a target="_blank" href="https://qiang.li/" rel="noreferrer">
+            <span>https://qiang.li/</span>
             <i
               className="fas fa-external-link-alt"
               style={{ fontSize: '0.8em' }}
