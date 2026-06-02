@@ -3,6 +3,7 @@ organization: 10x Genomics
 titles:
   - title: Senior Software Engineer
     startDate: 'Jun 2019'
+    endDate: 'Jul 2025'
     description: 
 tags:
   - Golang
