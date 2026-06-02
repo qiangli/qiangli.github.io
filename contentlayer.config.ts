@@ -132,6 +132,42 @@ export const AdditionalInfo = defineDocumentType(() => ({
       description: 'The name of the additional info section',
       required: false,
     },
+    // Optional cloudbox-embed slot. When `cloudboxApp` is set, the
+    // AdditionalItem component renders an iframe via the cloudbox
+    // embed.js snippet (Mode A by default — no login required, the
+    // upstream app handles its own auth in-iframe). See the embedding
+    // plan at dhnt/docs/handlers-test-flake-fix-plan.md siblings for
+    // the full integration spec.
+    cloudboxApp: {
+      type: 'string',
+      description: 'Outpost-advertised app name (e.g. classgo)',
+      required: false,
+    },
+    cloudboxHost: {
+      type: 'string',
+      description: 'Cloudbox-registered host that serves the app',
+      required: false,
+    },
+    cloudboxLogin: {
+      type: 'string',
+      description: 'Login mode: none | subdomain | popup (default: none)',
+      required: false,
+    },
+    cloudboxOrigin: {
+      type: 'string',
+      description: 'Cloudbox origin to load embed.js from (default: https://ai.dhnt.io)',
+      required: false,
+    },
+    cloudboxHeight: {
+      type: 'string',
+      description: 'Initial iframe height in CSS px (default: 640)',
+      required: false,
+    },
+    cloudboxPath: {
+      type: 'string',
+      description: 'Optional in-app subpath, must start with /',
+      required: false,
+    },
   },
 }));
 
