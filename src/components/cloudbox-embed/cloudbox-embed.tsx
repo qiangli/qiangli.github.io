@@ -35,8 +35,16 @@ interface CloudboxEmbedProperties {
  * (served at <origin>/embed.js) and the matching <div data-cloudbox-*>
  * the snippet binds to on load.
  *
- * Print-hidden by default so the PDF résumé export doesn't render a
- * stale-looking iframe placeholder.
+ * When the embedded app's auth gate fails, cloudbox itself detects the
+ * iframe context (via Sec-Fetch-Dest / Accept) and renders a friendly
+ * HTML page inside the iframe — including a postMessage of
+ * `cloudbox-auth-required` to the parent so embed.js's snippet can
+ * surface its sign-in overlay. That makes this component pure
+ * mount-and-go: no per-origin CORS probe, no integrator-specific
+ * fallback markup. The polite degraded state lives on the server side
+ * and is the same for every embedding domain.
+ *
+ * Print-hidden so the PDF résumé export skips the iframe entirely.
  */
 export default function CloudboxEmbed({
   app,
