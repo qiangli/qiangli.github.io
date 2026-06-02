@@ -13,6 +13,7 @@ export default function AdditionalItem({
   cloudboxOrigin,
   cloudboxHeight,
   cloudboxPath,
+  cloudboxLinkTitle,
 }: AdditionalInfo): ReactNode {
   return (
     <article className="space-y-4">
@@ -33,6 +34,7 @@ export default function AdditionalItem({
           origin={cloudboxOrigin}
           height={cloudboxHeight}
           path={cloudboxPath}
+          linkTitle={cloudboxLinkTitle}
         />
       )}
     </article>

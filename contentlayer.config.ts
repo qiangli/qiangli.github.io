@@ -168,6 +168,12 @@ export const AdditionalInfo = defineDocumentType(() => ({
       description: 'Optional in-app subpath, must start with /',
       required: false,
     },
+    cloudboxLinkTitle: {
+      type: 'string',
+      description:
+        'Optional link label rendered above the iframe, pointing at the app URL',
+      required: false,
+    },
   },
 }));
 

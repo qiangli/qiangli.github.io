@@ -28,6 +28,13 @@ interface CloudboxEmbedProperties {
   height?: string;
   /** Optional sub-path inside the app, must start with "/". */
   path?: string;
+  /**
+   * Optional label rendered as a link above the iframe pointing at the
+   * embedded app URL. Use when the integrator wants a direct
+   * out-to-cloudbox affordance separate from the iframe content (e.g.
+   * "LERN" linking to the lern app under the "Cloudbox" section).
+   */
+  linkTitle?: string;
 }
 
 /**
@@ -53,10 +60,26 @@ export default function CloudboxEmbed({
   origin = 'https://ai.dhnt.io',
   height = '640',
   path,
+  linkTitle,
 }: CloudboxEmbedProperties): ReactNode {
-  const scriptSource = `${origin.replace(/\/+$/, '')}/embed.js`;
+  const cleanOrigin = origin.replace(/\/+$/, '');
+  const subpath = path?.startsWith('/') ? path : '/';
+  const appURL = `${cleanOrigin}/h/${encodeURIComponent(host)}/app/${encodeURIComponent(app)}${subpath}`;
+  const scriptSource = `${cleanOrigin}/embed.js`;
   return (
     <>
+      {linkTitle && (
+        <p className="print:hidden">
+          <a
+            href={appURL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
+            {linkTitle}
+          </a>
+        </p>
+      )}
       <div
         data-cloudbox-app={app}
         data-cloudbox-host={host}
