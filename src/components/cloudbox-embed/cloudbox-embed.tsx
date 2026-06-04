@@ -39,7 +39,7 @@ interface CloudboxEmbedProperties {
 
 /**
  * CloudboxEmbed renders a slot for cloudbox's third-party embed snippet
- * (served at <origin>/embed.js) and the matching <div data-cloudbox-*>
+ * (served at <origin>/cloudbox/embed.js) and the matching <div data-cloudbox-*>
  * the snippet binds to on load.
  *
  * When the embedded app's auth gate fails, cloudbox itself detects the
@@ -64,8 +64,8 @@ export default function CloudboxEmbed({
 }: CloudboxEmbedProperties): ReactNode {
   const cleanOrigin = origin.replace(/\/+$/, '');
   const subpath = path?.startsWith('/') ? path : '/';
-  const appURL = `${cleanOrigin}/h/${encodeURIComponent(host)}/app/${encodeURIComponent(app)}${subpath}`;
-  const scriptSource = `${cleanOrigin}/embed.js`;
+  const appURL = `${cleanOrigin}/matrix/h/${encodeURIComponent(host)}/app/${encodeURIComponent(app)}${subpath}`;
+  const scriptSource = `${cleanOrigin}/cloudbox/embed.js`;
   return (
     <>
       {linkTitle && (
