@@ -36,9 +36,9 @@ concurrency:
 jobs:
   sdlc:
     name: Implement issue and deploy Pages
-    # Uses a self-hosted runner so the conductor can use the operator's
+    # Uses the dragon self-hosted runner so Codex can use the operator's
     # subscription login/session instead of API-key billing.
-    runs-on: [self-hosted, sdlc]
+    runs-on: [self-hosted, sdlc, dragon]
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
