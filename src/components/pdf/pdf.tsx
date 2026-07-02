@@ -50,7 +50,7 @@ Font.register({
     {
       fontStyle: 'italic',
       fontWeight: 700,
-      src: path.join(process.cwd(), 'src/fonts/AlbertSans-BoldIatalic.ttf'),
+      src: path.join(process.cwd(), 'src/fonts/AlbertSans-BoldItalic.ttf'),
     },
   ],
 });
