@@ -1,0 +1,265 @@
+name: SDLC issue to GitHub Pages
+
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: "Existing GitHub issue number to update with comments"
+        required: false
+        type: string
+      issue_title:
+        description: "Request title when running manually"
+        required: true
+        type: string
+      issue_body:
+        description: "Request body when running manually"
+        required: false
+        type: string
+      conductor:
+        description: "Conductor agent command available on the runner"
+        required: false
+        default: codex
+        type: string
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: sdlc-github-pages
+  cancel-in-progress: false
+
+jobs:
+  sdlc:
+    name: Implement issue and deploy Pages
+    # Uses a self-hosted runner so the conductor can use the operator's
+    # subscription login/session instead of API-key billing.
+    runs-on: [self-hosted, sdlc]
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SDLC_CONDUCTOR: ${{ inputs.conductor || vars.SDLC_CONDUCTOR || 'codex' }}
+      ISSUE_NUMBER: ${{ github.event.issue.number || inputs.issue_number }}
+      ISSUE_URL: ${{ github.event.issue.html_url }}
+      ISSUE_TITLE: ${{ github.event.issue.title || inputs.issue_title }}
+      ISSUE_BODY: ${{ github.event.issue.body || inputs.issue_body }}
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Install bashy
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -x "$HOME/bin/bashy" ]; then
+            echo "$HOME/bin" >> "$GITHUB_PATH"
+            export PATH="$HOME/bin:$PATH"
+          fi
+          if ! command -v bashy >/dev/null 2>&1; then
+            cat >&2 <<EOF
+          bashy is not installed on this self-hosted runner.
+
+          Install bashy for the runner user, for example:
+            mkdir -p "\$HOME/bin"
+            ln -sf /path/to/bashy/bin/bashy "\$HOME/bin/bashy"
+          EOF
+            exit 2
+          fi
+          bashy --version
+
+      - name: Verify conductor subscription login
+        shell: bash
+        run: |
+          set -euo pipefail
+          if command -v "$SDLC_CONDUCTOR" >/dev/null 2>&1; then
+            command -v "$SDLC_CONDUCTOR"
+          else
+            cat >&2 <<EOF
+          Conductor '$SDLC_CONDUCTOR' is not installed on this self-hosted runner.
+
+          Install it for the runner user and complete the subscription login
+          interactively before running this workflow.
+          EOF
+            exit 2
+          fi
+          case "$SDLC_CONDUCTOR" in
+            codex)
+              codex --version
+              ;;
+            claude)
+              claude --version
+              ;;
+            *)
+              "$SDLC_CONDUCTOR" --version || true
+              ;;
+          esac
+
+      - name: Prepare request
+        id: request
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .bashy/sdlc
+          issue_number="${ISSUE_NUMBER:-}"
+          issue_url="${ISSUE_URL:-}"
+          if [ -z "$issue_url" ] && [ -n "$issue_number" ]; then
+            issue_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/issues/${issue_number}"
+          fi
+          {
+            printf '%s\n\n' "$ISSUE_TITLE"
+            printf '%s\n' "${ISSUE_BODY:-}"
+          } > .bashy/sdlc/request.md
+          {
+            printf 'issue_number=%s\n' "$issue_number"
+            printf 'issue_url=%s\n' "$issue_url"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Comment start
+        if: steps.request.outputs.issue_number != ''
+        shell: bash
+        run: |
+          cat > .bashy/sdlc/comment-start.md <<EOF
+          SDLC started for this issue.
+
+          - Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+          - Conductor: \`${SDLC_CONDUCTOR}\`
+          EOF
+          gh issue comment "${{ steps.request.outputs.issue_number }}" --body-file .bashy/sdlc/comment-start.md
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run SDLC conductor
+        id: sdlc
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .bashy/sdlc/runs
+          issue_args=(
+            --no-config
+            --conductor "$SDLC_CONDUCTOR"
+            --cwd "$GITHUB_WORKSPACE"
+            --runs-dir .bashy/sdlc/runs
+            --intake-provider github
+            --intake-repo "$GITHUB_REPOSITORY"
+            --staging github-actions-build
+            --production github-pages
+            --issue-file .bashy/sdlc/request.md
+            --timeout 45m
+          )
+          if [ -n "${{ steps.request.outputs.issue_number }}" ]; then
+            issue_args+=(--issue-id "${{ steps.request.outputs.issue_number }}")
+          fi
+          if [ -n "${{ steps.request.outputs.issue_url }}" ]; then
+            issue_args+=(--issue-url "${{ steps.request.outputs.issue_url }}")
+          fi
+          set +e
+          bashy sdlc tick "${issue_args[@]}" 2>&1 | tee .bashy/sdlc/conductor.log
+          status=${PIPESTATUS[0]}
+          set -e
+          ref="$(awk '/sdlc reference:/ {print $3; exit}' .bashy/sdlc/conductor.log)"
+          printf 'ref=%s\n' "$ref" >> "$GITHUB_OUTPUT"
+          exit "$status"
+
+      - name: Build static site
+        run: pnpm build
+        env:
+          PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+
+      - name: Commit and push source changes
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A ':!.bashy'
+          if git diff --cached --quiet; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "SDLC issue #${ISSUE_NUMBER:-manual}: ${ISSUE_TITLE}"
+          echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push origin HEAD:main
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Verify deployed page
+        id: verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="${{ steps.deployment.outputs.page_url }}"
+          if [ -z "$url" ]; then
+            url="https://qiang.li/"
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          bashy sdlc verify --url "$url" --timeout 60s
+
+      - name: Resolve SDLC reference
+        if: steps.sdlc.outputs.ref != ''
+        shell: bash
+        run: |
+          bashy sdlc resolve "${{ steps.sdlc.outputs.ref }}" \
+            --runs-dir .bashy/sdlc/runs \
+            --status resolved \
+            --by github-actions \
+            --note "GitHub Pages deployed and verified at ${{ steps.verify.outputs.url }}."
+
+      - name: Comment result
+        if: always() && steps.request.outputs.issue_number != ''
+        shell: bash
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            cat > .bashy/sdlc/comment-result.md <<EOF
+          SDLC completed and deployed to GitHub Pages.
+
+          - SDLC ref: \`${{ steps.sdlc.outputs.ref }}\`
+          - Commit: \`${{ steps.commit.outputs.commit_sha }}\`
+          - Page: ${{ steps.verify.outputs.url }}
+          - Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+          EOF
+          else
+            cat > .bashy/sdlc/comment-result.md <<EOF
+          SDLC failed before deployment.
+
+          - Run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}
+          - Check the workflow logs for conductor/build/deploy details.
+          EOF
+          fi
+          gh issue comment "${{ steps.request.outputs.issue_number }}" --body-file .bashy/sdlc/comment-result.md
