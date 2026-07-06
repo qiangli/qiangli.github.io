@@ -13,8 +13,11 @@ on:
   workflow_dispatch:
 jobs:
   sdlc:
-    # Only the repo owner labelling `sdlc:go` (or a manual dispatch) drives it.
-    if: ${{ github.event_name == 'workflow_dispatch' || (contains(github.event.issue.labels.*.name, 'sdlc:go') && github.event.sender.login == github.repository_owner) }}
+    # The `sdlc:go` label (or a manual dispatch) drives it. On a PRIVATE loom the
+    # ability to label IS the authorization, so we don't also require
+    # sender==owner — the reverse-proxy identity (e.g. `qiangli`) rarely equals
+    # the repo owner account. For a SHARED repo, re-add a sender/actor guard.
+    if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.issue.labels.*.name, 'sdlc:go') }}
     runs-on: [self-hosted, sdlc]
     env:
       SDLC_CONDUCTOR: ${{ vars.SDLC_CONDUCTOR || 'codex' }}
