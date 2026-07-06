@@ -35,8 +35,16 @@ bashy git add -A
 if ! bashy git diff --cached --quiet; then
   bashy git -c user.name='sdlc-conductor' -c user.email='sdlc@qiang.li' commit -m "${SDLC_COMMIT_MSG:-sdlc: update}"
 fi
+# GitHub token from the cloudbox vault: the headless act_runner job does NOT
+# inherit the operator's interactive env (no GITHUB_TOKEN), so load it here. The
+# file-based secrets token (~/.config/bashy/secrets-token) is readable as the
+# operator, so `bashy secrets env` works in the job. No per-repo secret; the token
+# stays in the vault. Emits `export GITHUB_TOKEN='...'`.
+eval "$(bashy secrets env 2>/dev/null)" || true
+tok="${GITHUB_TOKEN:-$(bashy gh auth token 2>/dev/null)}"
+[ -n "$tok" ] || { echo ">> ERROR: no GitHub token (vault + gh both empty)"; exit 1; }
 # GitHub = source of truth + Pages deploy (the live publish)
-ghurl="https://x-access-token:$(bashy gh auth token)@github.com/${GH_REPO:-qiangli/qiangli.github.io}.git"
+ghurl="https://x-access-token:${tok}@github.com/${GH_REPO:-qiangli/qiangli.github.io}.git"
 bashy git remote remove github 2>/dev/null || true
 bashy git remote add github "$ghurl"
 bashy git push github HEAD:main
