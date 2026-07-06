@@ -54,5 +54,5 @@ tsconfig.tsbuildinfo
 # ycode agent scratch
 .agents
 
-# bashy SDLC runtime state and agent logs
-.bashy/
+# bashy SDLC runtime state and agent logs (config .bashy/sdlc.yaml stays tracked)
+.bashy/generated/

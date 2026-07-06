@@ -20,7 +20,6 @@ jobs:
     if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.issue.labels.*.name, 'sdlc:go') }}
     runs-on: [self-hosted, sdlc]
     env:
-      SDLC_CONDUCTOR: ${{ vars.SDLC_CONDUCTOR || 'codex' }}
       # GitHub repo the change publishes to (source of truth + Pages deploy).
       GH_REPO: qiangli/qiangli.github.io
       ISSUE_TITLE: ${{ github.event.issue.title }}
@@ -38,9 +37,9 @@ jobs:
         run: |
           mkdir -p .bashy/generated/sdlc/runs
           { printf '%s\n\n' "$ISSUE_TITLE"; printf '%s\n' "${ISSUE_BODY:-}"; } > .bashy/generated/sdlc/request.md
-      - name: Conductor implements
+      - name: Conductor implements (agent from .bashy/sdlc.yaml)
         run: |
-          bashy sdlc tick --no-config --conductor "$SDLC_CONDUCTOR" \
+          bashy sdlc tick \
             --intake-provider loom --intake-repo "$GITHUB_REPOSITORY" \
             --issue-file .bashy/generated/sdlc/request.md --runs-dir .bashy/generated/sdlc/runs \
             --cwd "$PWD" --timeout 20m \

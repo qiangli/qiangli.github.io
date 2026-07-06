@@ -1,0 +1,9 @@
+# SDLC config for the loom-driven conductor loop (read by `bashy sdlc`).
+# The conductor agent is configured here, not hardcoded in the workflow — change
+# it in one place. Intake is passed as a flag by the workflow (dynamic per repo).
+conductor:
+  agent: codex
+reviewer:
+  agent: codex
+qa:
+  agent: codex
