@@ -10,3 +10,13 @@ qa:
 intake:
   # loom = the private control plane; the workflow passes --intake-repo (dynamic).
   provider: loom
+# The workflow performs the actual deploy via `bashy dag deploy.md` (preview gate
+# + push-to-GitHub → Pages). These entries just satisfy sdlc's config validation
+# and document the targets; sdlc tick only validates them, it doesn't deploy.
+deployment:
+  staging:
+    name: qiang-li-preview
+    healthcheck: http://127.0.0.1:8088/
+  production:
+    name: qiang-li
+    healthcheck: https://qiang.li/
