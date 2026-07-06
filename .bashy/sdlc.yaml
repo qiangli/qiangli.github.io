@@ -7,3 +7,6 @@ reviewer:
   agent: codex
 qa:
   agent: codex
+intake:
+  # loom = the private control plane; the workflow passes --intake-repo (dynamic).
+  provider: loom
