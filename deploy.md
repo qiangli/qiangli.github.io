@@ -47,6 +47,11 @@ tok="${GITHUB_TOKEN:-$(bashy gh auth token 2>/dev/null)}"
 ghurl="https://x-access-token:${tok}@github.com/${GH_REPO:-qiangli/qiangli.github.io}.git"
 bashy git remote remove github 2>/dev/null || true
 bashy git remote add github "$ghurl"
+# GitHub is the source of truth; loom may be behind if anything pushed to GitHub
+# out of band. Rebase the conductor's commit onto GitHub's current main so the
+# push always fast-forwards (content changes don't conflict with config/workflow).
+bashy git fetch github
+bashy git rebase github/main || { bashy git rebase --abort 2>/dev/null || true; echo ">> ERROR: rebase onto github/main conflicted — resolve in the issue thread"; exit 1; }
 bashy git push github HEAD:main
 # keep loom (the control plane) in sync so the next issue starts current
 bashy git push origin HEAD:main || echo ">> WARN: loom sync push failed (non-fatal)"
