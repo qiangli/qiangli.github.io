@@ -1,0 +1,52 @@
+name: sdlc
+# Loom-driven SDLC loop (private control plane):
+#   file an issue in the loom (Gitea) UI, label it `sdlc:go`
+#     -> this workflow runs on dragon's self-hosted loom runner (self-hosted, sdlc)
+#     -> the conductor (codex/claude) implements the change from the issue
+#     -> build + preview locally (a gate: a broken build never publishes)
+#     -> publish: push to GitHub main -> GitHub `deploy.yml` builds Pages -> live on qiang.li
+#     -> sync loom so the next run starts from the just-published state
+# Not what you wanted? File another issue; the loop repeats.
+on:
+  issues:
+    types: [labeled]
+  workflow_dispatch:
+jobs:
+  sdlc:
+    # Only the repo owner labelling `sdlc:go` (or a manual dispatch) drives it.
+    if: ${{ github.event_name == 'workflow_dispatch' || (contains(github.event.issue.labels.*.name, 'sdlc:go') && github.event.sender.login == github.repository_owner) }}
+    runs-on: [self-hosted, sdlc]
+    env:
+      SDLC_CONDUCTOR: ${{ vars.SDLC_CONDUCTOR || 'codex' }}
+      # GitHub repo the change publishes to (source of truth + Pages deploy).
+      GH_REPO: qiangli/qiangli.github.io
+      ISSUE_TITLE: ${{ github.event.issue.title }}
+      ISSUE_BODY: ${{ github.event.issue.body }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+    steps:
+      - name: PATH
+        run: for d in "$HOME/bin" "$HOME/.local/bin" /opt/homebrew/bin /usr/local/bin "$HOME/.local/share/mise/shims"; do echo "$d" >> "$GITHUB_PATH"; done
+      - name: Checkout from loom
+        env: { SERVER: "${{ github.server_url }}", REPO: "${{ github.repository }}", TOKEN: "${{ github.token }}" }
+        run: |
+          host="${SERVER#http*://}"
+          bashy git clone "http://x-access-token:${TOKEN}@${host}/${REPO}.git" .
+      - name: Prepare request
+        run: |
+          mkdir -p .bashy/generated/sdlc/runs
+          { printf '%s\n\n' "$ISSUE_TITLE"; printf '%s\n' "${ISSUE_BODY:-}"; } > .bashy/generated/sdlc/request.md
+      - name: Conductor implements
+        run: |
+          bashy sdlc tick --no-config --conductor "$SDLC_CONDUCTOR" \
+            --intake-provider loom --intake-repo "$GITHUB_REPOSITORY" \
+            --issue-file .bashy/generated/sdlc/request.md --runs-dir .bashy/generated/sdlc/runs \
+            --cwd "$PWD" --timeout 20m \
+            2>&1 | tee .bashy/generated/sdlc/conductor.log
+      - name: Build + preview (gate — a broken build never publishes)
+        run: bashy dag deploy.md deploy-preview
+      - name: Verify preview reachable
+        run: bashy sdlc verify --url http://127.0.0.1:8088/ --timeout 30s
+      - name: Publish to GitHub -> Pages -> live on qiang.li
+        env:
+          SDLC_COMMIT_MSG: "sdlc: ${{ github.event.issue.title }} (loom #${{ github.event.issue.number }})"
+        run: bashy dag deploy.md deploy-prod

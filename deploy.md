@@ -1,0 +1,46 @@
+---
+name: qiangli-site-deploy
+description: deploy targets for qiangli.github.io — preview is safe (does NOT touch the live site); deploy-prod publishes to GitHub -> Pages -> qiang.li
+---
+# deploy
+## Tasks
+### build
+Build the Next.js static export into out/.
+Effects: write
+```bash
+pnpm install
+pnpm build
+```
+
+### deploy-preview
+Build + serve the static site locally (secrets-free; does NOT touch qiang.li). Detached so verify can reach it.
+Requires: build
+Effects: write
+```bash
+out="${BUILD_OUT:-out}"; port="${PREVIEW_PORT:-8088}"
+pid=$(lsof -ti "tcp:$port" 2>/dev/null || true); [ -n "$pid" ] && kill $pid 2>/dev/null || true
+setsid nohup python3 -m http.server "$port" --directory "$out" >/tmp/qiangli-preview.log 2>&1 < /dev/null &
+sleep 1
+echo ">> preview at http://127.0.0.1:$port (does NOT touch the live site)"
+```
+
+### deploy-prod
+Publish the conductor's change: commit it, push to GitHub main (GitHub `deploy.yml` builds
+Pages -> live on qiang.li), then sync loom so the next run starts from the published state.
+GitHub is the source of truth; the runner authenticates as the operator via `bashy gh auth token`.
+Effects: write
+```bash
+set -e
+bashy git add -A
+if ! bashy git diff --cached --quiet; then
+  bashy git -c user.name='sdlc-conductor' -c user.email='sdlc@qiang.li' commit -m "${SDLC_COMMIT_MSG:-sdlc: update}"
+fi
+# GitHub = source of truth + Pages deploy (the live publish)
+ghurl="https://x-access-token:$(bashy gh auth token)@github.com/${GH_REPO:-qiangli/qiangli.github.io}.git"
+bashy git remote remove github 2>/dev/null || true
+bashy git remote add github "$ghurl"
+bashy git push github HEAD:main
+# keep loom (the control plane) in sync so the next issue starts current
+bashy git push origin HEAD:main || echo ">> WARN: loom sync push failed (non-fatal)"
+echo ">> published to GitHub main -> Pages will build -> live on qiang.li"
+```
