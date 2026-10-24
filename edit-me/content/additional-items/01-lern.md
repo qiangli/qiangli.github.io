@@ -1,7 +1,7 @@
 ---
 title: Cloudbox
 cloudboxApp: lern
-cloudboxHost: dragon
+cloudboxHost: lern
 cloudboxLogin: none
 cloudboxOrigin: https://ai.dhnt.io
 cloudboxHeight: '640'
