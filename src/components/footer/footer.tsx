@@ -39,15 +39,11 @@ export default function Footer(): ReactNode {
         <div className="space-y-1">
           <div onClick={scrollTop}>Copyright © {new Date().getFullYear()}</div>
           <div className="text-sm">
-            This page is generated from and hosted at{' '}
+            Powered by <SimpleLink href="https://dhnt.io">DHNT.io</SimpleLink>{' '}
+            Software Shaping · source and hosting on{' '}
             <SimpleLink href="https://github.com/qiangli/qiangli.github.io">
               GitHub
-            </SimpleLink>{' '}
-            assisted by{' '}
-            <SimpleLink href="https://github.com/openaide/awesome/tree/main/docker/continue">
-              Continue
-            </SimpleLink>{' '}
-            and <SimpleLink href="https://github.com/qiangli/ai">AI</SimpleLink>
+            </SimpleLink>
           </div>
         </div>
       </div>
