@@ -40,7 +40,6 @@ export default function Header(): ReactNode {
             <PrinterButton />
             <PDFButton />
             <ShareButton />
-            <ShapeButton />
             <ThemeToggle
               buttonTextVisible={false}
               labelButton="Select theme"
@@ -49,6 +48,7 @@ export default function Header(): ReactNode {
               color={undefined}
               variant={undefined}
             />
+            <ShapeButton />
           </div>
         )}
       </div>
@@ -68,7 +68,6 @@ export default function Header(): ReactNode {
             {/* <DownloadButton /> */}
             {/* <GoogleButton /> */}
             <ShareButton />
-            <ShapeButton />
             <ThemeToggle
               buttonTextVisible={false}
               labelButton="Select theme"
@@ -77,6 +76,7 @@ export default function Header(): ReactNode {
               color={undefined}
               variant={undefined}
             />
+            <ShapeButton />
           </div>
         </div>
       </div>
