@@ -9,6 +9,7 @@ import { fullName } from 'src/helpers/utilities';
 import PrinterButton from './printer-button';
 import PDFButton from './pdf-button';
 import ShareButton from './share-button';
+import ShapeButton from './shape-button';
 // import DownloadButton from './download-button';
 // import GoogleButton from './google-button';
 
@@ -39,6 +40,7 @@ export default function Header(): ReactNode {
             <PrinterButton />
             <PDFButton />
             <ShareButton />
+            <ShapeButton />
             <ThemeToggle
               buttonTextVisible={false}
               labelButton="Select theme"
@@ -66,6 +68,7 @@ export default function Header(): ReactNode {
             {/* <DownloadButton /> */}
             {/* <GoogleButton /> */}
             <ShareButton />
+            <ShapeButton />
             <ThemeToggle
               buttonTextVisible={false}
               labelButton="Select theme"
