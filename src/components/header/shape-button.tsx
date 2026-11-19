@@ -8,6 +8,10 @@ import { Button } from 'src/components/button/button';
 export const SHAPE_URL =
   'https://165-227-49-91.sslip.io/matrix/h/elephant/app/site/';
 
+// Sign in on the satellite, then land on the shaped page (cloudbox keeps
+// ?next= across the provider round trip).
+export const SIGN_IN_URL = `${new URL(SHAPE_URL).origin}/cloud/signin?next=${encodeURIComponent(new URL(SHAPE_URL).pathname)}`;
+
 export default function ShapeButton(): ReactNode {
   // Already on the engine face: the panel is the shaping entry point there.
   const [onEngine, setOnEngine] = useState(false);

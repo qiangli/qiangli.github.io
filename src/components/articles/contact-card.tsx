@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import styles from '@styles/contact-card.module.css';
-import { SHAPE_URL } from 'src/components/header/shape-button';
+import { SIGN_IN_URL } from 'src/components/header/shape-button';
 
 // Contact details are not published on this static page. Behind the shaping
 // engine (DHNT.io Software Shaping) a signed-in visitor sees them: the
@@ -14,7 +14,7 @@ export default function ContactCard(): ReactNode {
       <p>
         <i className="fas fa-user-lock"></i>
         <a
-          href={SHAPE_URL}
+          href={SIGN_IN_URL}
           title="Sign in with DHNT.io to see all contact details"
           data-shaping-signin=""
         >
