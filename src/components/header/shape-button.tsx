@@ -21,6 +21,7 @@ export default function ShapeButton(): ReactNode {
       <a
         href={SHAPE_URL}
         title="Shape this page (DHNT.io Software Shaping)"
+        data-shaping-hide-on-engine=""
         aria-label="Shape this page"
       >
         <svg
